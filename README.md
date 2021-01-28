@@ -47,6 +47,10 @@ Configuration in the DoH detection and logging iRule is performed through a set 
          "/Commmon/my_custom_url_category"
       }
       ```
+      
+      You can get the list of URLDB categories with this command:
+      
+      `tmsh list sys url-db url-category |grep "sys url-db url-category " |awk -F" " '{print $4}'`
   
   - **static::BLACKHOLE_RTYPE_A**: (off=0, on=1) enables or disables blackholing of DoH A record requests. This will send a response with 199.199.199.199. When the client attempts to connect to this IP through the SSL Orchestrator topology, the connection will be rejected.
   
