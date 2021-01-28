@@ -24,11 +24,7 @@ when RULE_INIT {
     ## Disabled (value: empty) or enabled (value: names of URL categories to block)
     ## If URLDB is not licensed and provisioned, this list can still contain local custom URL categories
     set static::BLACKHOLE_URLS {
-        "/Common/Advanced_Malware_Command_and_Control"
-        "/Advanced_Malware_Payloads"
-        "/Common/Spyware_and_Adware"
-        "/Comomn/SPAM_URLs"
-        "/Common/Financial_Data_and_Services"
+
     }
     
     ## User-defined: if enabled, generate blachole DNS responses for these record types
