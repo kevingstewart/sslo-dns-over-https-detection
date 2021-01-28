@@ -22,3 +22,23 @@ Installation is as simple as adding the respective iRule to an SSL Orchestrator 
   - If using the DoH detection and logging iRule, additional configuration is required (see below).
 
 ## Configuration
+Configuration in the DoH detection and logging iRule is performed through a set of static variables at the top of the rule:
+
+  - **static::LOCAL_LOG**:
+
+  - **static::HSL**:
+
+  - **static::URLDB_LICENSED**:
+
+  - **static::BLACKHOLE_URLS**:
+  
+  - **static::BLACKHOLE_RTYPE_A**:
+  
+  - **static::BLACKHOLE_RTYPE_AAAA**:
+  
+  - **static::BLACKHOLE_RTYPE_TXT**:
+  
+  - **static::dns_codes**:
+  
+  
+  
