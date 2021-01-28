@@ -21,24 +21,39 @@ Installation is as simple as adding the respective iRule to an SSL Orchestrator 
   - In the SSL Orchestrator UI, under the Interception Rules tab, click on the interception rule to edit (typically ending with "-in-t"), and at the bottom of this configuration page, add the iRule and then (re)deploy.
   - If using the DoH detection and logging iRule, additional configuration is required (see below).
 
+------------------------------
+
 ## Configuration
 Configuration in the DoH detection and logging iRule is performed through a set of static variables at the top of the rule:
 
-  - **static::LOCAL_LOG**:
+  - **static::LOCAL_LOG**: (off=0, on=1) enables or disables local Syslog logging. It is recommended to disable this unless troubleshooting.
 
-  - **static::HSL**:
+  - **static::HSL**: (off="none", on=[HSL pool name]) enables or disables remote high-speed logging (HSL). To create an HSL pool:
+    - Under Local Traffic -> Pools, create a pool that points to the remote Syslog (using something on port 514).
+    - Enable HSL logging in the iRule by specifying the pool name in the static variable.
 
-  - **static::URLDB_LICENSED**:
+  - **static::URLDB_LICENSED**: (off=0, on=1) the DoH detection iRule can use URL categorization to perform DoH blackholing. If subscription-based URLDB is licensed and provisioned, you can enable this (set to 1) to search the URLDB categories. Otherwise, set to 0 and continue to use custom URL categories.
 
-  - **static::BLACKHOLE_URLS**:
+  - **static::BLACKHOLE_URLS**: (off=empty, on=[list of category names]) if DoH blackholing is desired, add the list of URL categories to search here. This can be a combination of URLDB categories and/or custom URL categories. Leave it empty to disable URL categorization. For example:
   
-  - **static::BLACKHOLE_RTYPE_A**:
+      ```
+      set static::BLACKHOLE_URLS {
+         "/Common/Advanced_Malware_Command_and_Control"
+         "/Advanced_Malware_Payloads"
+         "/Common/Spyware_and_Adware"
+         "/Comomn/SPAM_URLs"
+         "/Common/Financial_Data_and_Services"
+         "/Commmon/my_custom_url_category"
+      }
+      ```
   
-  - **static::BLACKHOLE_RTYPE_AAAA**:
+  - **static::BLACKHOLE_RTYPE_A**: (off=0, on=1) enables or disables blackholing of DoH A record requests. This will send a response with 199.199.199.199. When the client attempts to connect to this IP through the SSL Orchestrator topology, the connection will be rejected.
   
-  - **static::BLACKHOLE_RTYPE_TXT**:
+  - **static::BLACKHOLE_RTYPE_AAAA**: (off=0, on=1) enables or disables blackholing of DoH AAAA record requests. This will send a response with 0:0:0:0:0:ffff:c7c7:c7c7. When the client attempts to connect to this IP through the SSL Orchestrator topology, the connection will be rejected.
   
-  - **static::dns_codes**:
+  - **static::BLACKHOLE_RTYPE_TXT**: (off=0, on=1) enables or disables blackholing of DoH TXT record requests. This will send a response with generic "v=spf1 -all".
+  
+  - **static::dns_codes**: This value does not need to be edited, but contains an array of type:value values for different record types. This array is used to identify record types (ex. A, AAAA, TXT, CNAME) for logging.
   
   
   
